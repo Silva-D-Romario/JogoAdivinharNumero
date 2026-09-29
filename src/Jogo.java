@@ -1,29 +1,39 @@
-import java.util.Scanner;
 import java.util.Random;
+import java.util.Scanner;
+
 public class Jogo {
-    public static void main (String []args ){
-        Random random = new Random ();
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) {
+        Random random = new Random();
+        int numeroSecreto = random.nextInt(100) + 1;
+        int tentativasRestantes = 10;
 
-        int tent=10;
-        int NumAle = random.nextInt(100);
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (tentativasRestantes > 0) {
+                System.out.printf("Tente adivinhar o número entre 1 e 100. Tentativas restantes: %d%n",
+                        tentativasRestantes);
 
-        for (int i=1; 1<=10; i++) {
-            System.out.println ("Tente adivinhar o número");
-            System.out.println ("Você tem "+tent+ " Tentativas ");
-            int numero = sc.nextInt ();
-            tent -=1;
-            if (numero > NumAle) {
-                System.out.println ("O número que você digitou é maior que a resposta");
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Digite um número inteiro.");
+                    scanner.next();
+                    continue;
+                }
 
-            }else if (numero < NumAle){
-                System.out.println ("O número que você digitou é menor que a resposta");
+                int palpite = scanner.nextInt();
+                tentativasRestantes--;
 
-            }else{
-                System.out.println ("Parabéns você acertou o número era "+NumAle);
-                break;
+                if (palpite == numeroSecreto) {
+                    System.out.printf("Parabéns! Você acertou: %d.%n", numeroSecreto);
+                    return;
+                }
+
+                if (palpite > numeroSecreto) {
+                    System.out.println("O número secreto é menor.");
+                } else {
+                    System.out.println("O número secreto é maior.");
+                }
             }
-            System.out.println ("__________________________________________________");
+
+            System.out.printf("Suas tentativas acabaram. O número era %d.%n", numeroSecreto);
         }
     }
 }
